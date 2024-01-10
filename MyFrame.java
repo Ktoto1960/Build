@@ -24,6 +24,9 @@ public class MyFrame extends JFrame implements KeyEventDispatcher, MouseListener
     double n = -13;
     int kolvo_vragov = 3;
     int f = 0;
+    int k;
+    int l;
+    int p;
     ArrayList<Blocks> vragi = new ArrayList<Blocks>();
     ArrayList<Bullet> bullets_vragov = new ArrayList<Bullet>();
     ArrayList<Bullet> bullets_korablya = new ArrayList<Bullet>();
@@ -32,18 +35,20 @@ public class MyFrame extends JFrame implements KeyEventDispatcher, MouseListener
     int oput = 0;
     int max_shkala = 100;
     int shkala = 0;
+    int vub = -1;
+    ArrayList<Integer> vub_bloki = new ArrayList<Integer>();
 
 
     public MyFrame() {
-        korabl.add(new Blocks(930, 540, 0, 0, 0, 0, 0, 200,1));
-        korabl.add(new Blocks(900, 540, 0, 0, 0, 0, 0, 200,1));
-        korabl.add(new Blocks(960, 540, 0, 0, 0, 0, 0, 200,1));
-        korabl.add(new Blocks(930, 510, 1, 0, 0, 0, 0, 200,1));
-        korabl.add(new Blocks(930, 570, 1, 0, 0, 0, 0, 200,1));
-        korabl.add(new Blocks(960, 570, 0, 0, 0, 0, 0, 200,1));
-        korabl.add(new Blocks(900, 510, 1, 0, 0, 0, 0, 200,1));
-        korabl.add(new Blocks(900, 570, 0, 0, 0, 0, 0, 200,1));
-        korabl.add(new Blocks(960, 510, 1, 0, 0, 0, 0, 200,1));
+        korabl.add(new Blocks(930, 540, 0, 0, 0, 0, 0, 200, 1));
+        korabl.add(new Blocks(900, 540, 0, 0, 0, 0, 0, 200, 1));
+        korabl.add(new Blocks(960, 540, 0, 0, 0, 0, 0, 200, 1));
+        korabl.add(new Blocks(930, 510, 1, 0, 0, 0, 0, 200, 1));
+        korabl.add(new Blocks(930, 570, 1, 0, 0, 0, 0, 200, 1));
+        korabl.add(new Blocks(960, 570, 0, 0, 0, 0, 0, 200, 1));
+        korabl.add(new Blocks(900, 510, 1, 0, 0, 0, 0, 200, 1));
+        korabl.add(new Blocks(900, 570, 0, 0, 0, 0, 0, 200, 1));
+        korabl.add(new Blocks(960, 510, 1, 0, 0, 0, 0, 200, 1));
         setSize(1930, 1080);
         addMouseListener((MouseListener) this);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -61,19 +66,19 @@ public class MyFrame extends JFrame implements KeyEventDispatcher, MouseListener
         g = bufferStrategy.getDrawGraphics();
         g.clearRect(0, 0, getWidth(), getHeight());
         if (f == 0) {
-            vragi.add(new Blocks(r.nextInt(1930), r.nextInt(1080), r.nextInt(2), 1, 1, 0, 0, 200,1));
-            vragi.add(new Blocks(r.nextInt(1930), r.nextInt(1080), r.nextInt(2), -1, 1, 0, 0, 200,1));
-            vragi.add(new Blocks(r.nextInt(1930), r.nextInt(1080), r.nextInt(2), -1, -1, 0, 0, 200,1));
+            vragi.add(new Blocks(r.nextInt(1930), r.nextInt(1080), r.nextInt(2), 1, 1, 0, 0, 200, 1));
+            vragi.add(new Blocks(r.nextInt(1930), r.nextInt(1080), r.nextInt(2), -1, 1, 0, 0, 200, 1));
+            vragi.add(new Blocks(r.nextInt(1930), r.nextInt(1080), r.nextInt(2), -1, -1, 0, 0, 200, 1));
             f = 1;
 
         }
-        for(int i = 0;i<kolvo_vragov; i = i + 1){ //получение опыта
-            if((vragi.get(i).hp<1)&&(vragi.get(i).zhisn == 1)){
+        for (int i = 0; i < kolvo_vragov; i = i + 1) { //получение опыта
+            if ((vragi.get(i).hp < 1) && (vragi.get(i).zhisn == 1)) {
                 shkala = shkala + 10;
                 vragi.get(i).zhisn = 0;
             }
         }
-        if(shkala > max_shkala-1){   //получение опыта 2.0
+        if (shkala > max_shkala - 1) {   //получение опыта 2.0
             oput = oput + 1;
             shkala = shkala - max_shkala;
             max_shkala = max_shkala + 10;
@@ -211,69 +216,97 @@ public class MyFrame extends JFrame implements KeyEventDispatcher, MouseListener
                 vragi.get(i).scor_y = 1;
             }
         }
-        for(int i = 0; i < kolvo_bullets_vragov; i = i + 1){ //проверка повреждений корабля
-            if(bullets_vragov.get(i).zaryad == 1){
-                for(int j = 0;j < colvoblokovvkorable;j = j + 1){
-                    if((bullets_vragov.get(i).zaryad == 1)&&(korabl.get(j).hp > 0)&&(Math.abs(bullets_vragov.get(i).x-korabl.get(j).x) < 16)&&(Math.abs(bullets_vragov.get(i).y-korabl.get(j).y) < 16)){
+        for (int i = 0; i < kolvo_bullets_vragov; i = i + 1) { //проверка повреждений корабля
+            if (bullets_vragov.get(i).zaryad == 1) {
+                for (int j = 0; j < colvoblokovvkorable; j = j + 1) {
+                    if ((bullets_vragov.get(i).zaryad == 1) && (korabl.get(j).hp > 0) && (Math.abs(bullets_vragov.get(i).x - korabl.get(j).x) < 16) && (Math.abs(bullets_vragov.get(i).y - korabl.get(j).y) < 16)) {
                         bullets_vragov.get(i).zaryad = 0;
-                        if(bullets_vragov.get(i).tipblocka == 0){
+                        if (bullets_vragov.get(i).tipblocka == 0) {
                             korabl.get(j).hp = korabl.get(j).hp - 10;
                         }
-                        if(bullets_vragov.get(i).tipblocka == 1){
+                        if (bullets_vragov.get(i).tipblocka == 1) {
                             korabl.get(j).hp = korabl.get(j).hp - 20;
                         }
                     }
                 }
             }
         }
-        for(int i = 0; i < kolvo_bullets_korablya; i = i + 1){ //проверка повреждений корабля
-            if(bullets_korablya.get(i).zaryad == 1){
-                for(int j = 0;j < kolvo_vragov;j = j + 1){
-                    if((bullets_korablya.get(i).zaryad == 1)&&(vragi.get(j).hp > 0)&&(Math.abs(bullets_korablya.get(i).x-vragi.get(j).x) < 16)&&(Math.abs(bullets_korablya.get(i).y-vragi.get(j).y) < 16)){
+        for (int i = 0; i < kolvo_bullets_korablya; i = i + 1) { //проверка повреждений корабля
+            if (bullets_korablya.get(i).zaryad == 1) {
+                for (int j = 0; j < kolvo_vragov; j = j + 1) {
+                    if ((bullets_korablya.get(i).zaryad == 1) && (vragi.get(j).hp > 0) && (Math.abs(bullets_korablya.get(i).x - vragi.get(j).x) < 16) && (Math.abs(bullets_korablya.get(i).y - vragi.get(j).y) < 16)) {
                         bullets_korablya.get(i).zaryad = 0;
-                        if(bullets_korablya.get(i).tipblocka == 0){
+                        if (bullets_korablya.get(i).tipblocka == 0) {
                             vragi.get(j).hp = vragi.get(j).hp - 10;
                         }
-                        if(bullets_korablya.get(i).tipblocka == 1){
+                        if (bullets_korablya.get(i).tipblocka == 1) {
                             vragi.get(j).hp = vragi.get(j).hp - 20;
                         }
                     }
                 }
             }
         }
-        for (int i = 0; i < kolvo_vragov; i = i + 1) { //отрисовка врагов которые смотрят на тебя
-            if(vragi.get(i).hp>0) {
-                if ((vragi.get(i).x > -30) && (vragi.get(i).x < 1930) && (vragi.get(i).y > -30) && (vragi.get(i).y < 1100)) {
-                    double m = 13 * (930 - vragi.get(i).x) / Math.sqrt((930 - vragi.get(i).x) * (930 - vragi.get(i).x) + (540 - vragi.get(i).y) * (540 - vragi.get(i).y));
-                    double n = 13 * (540 - vragi.get(i).y) / Math.sqrt((930 - vragi.get(i).x) * (930 - vragi.get(i).x) + (540 - vragi.get(i).y) * (540 - vragi.get(i).y));
-                    vragi.get(i).paint(g, m, n);
+        if (pause == 0) {
+            for (int i = 0; i < kolvo_vragov; i = i + 1) { //отрисовка врагов которые смотрят на тебя
+                if (vragi.get(i).hp > 0) {
+                    if ((vragi.get(i).x > -30) && (vragi.get(i).x < 1930) && (vragi.get(i).y > -30) && (vragi.get(i).y < 1100)) {
+                        double m = 13 * (930 - vragi.get(i).x) / Math.sqrt((930 - vragi.get(i).x) * (930 - vragi.get(i).x) + (540 - vragi.get(i).y) * (540 - vragi.get(i).y));
+                        double n = 13 * (540 - vragi.get(i).y) / Math.sqrt((930 - vragi.get(i).x) * (930 - vragi.get(i).x) + (540 - vragi.get(i).y) * (540 - vragi.get(i).y));
+                        vragi.get(i).paint(g, m, n);
+                    }
                 }
             }
         }
-
-        for (int i = 0; i < colvoblokovvkorable; i = i + 1) {
-            korabl.get(i).paint(g, m, n);
+        if (pause == 2) {
+            g.drawRect(90,90,500,900);
+            g.drawRect(640,90,500,900);
+            g.drawRect(1190,90,500,900);
+            if(k == 0){
+                g.drawOval(100,290,480,480);
+            }
+            if( k == 1){
+                g.drawRect(110,110,460,860);
+            }
+            if(l == 0){
+                g.drawOval(650,290,480,480);
+            }
+            if( l == 1){
+                g.drawRect(660,110,460,860);
+            }
+            if(k == 0){
+                g.drawOval(1200,290,480,480);
+            }
+            if( k == 1){
+                g.drawRect(1210,110,460,860);
+            }
         }
-        for (int i = 0; i < kolvo_bullets_vragov; i = i + 1) {
-            bullets_vragov.get(i).paint(g);
+        if (pause < 2) {
+            for (int i = 0; i < colvoblokovvkorable; i = i + 1) {
+                korabl.get(i).paint(g, m, n);
+            }
         }
-        for (int i = 0; i < kolvo_bullets_korablya; i = i + 1) {
-            bullets_korablya.get(i).paint(g);
+        if (pause == 0) {
+            for (int i = 0; i < kolvo_bullets_vragov; i = i + 1) {
+                bullets_vragov.get(i).paint(g);
+            }
+            for (int i = 0; i < kolvo_bullets_korablya; i = i + 1) {
+                bullets_korablya.get(i).paint(g);
+            }
         }
         g.drawLine((int) gr_lev, (int) gr_nizh, (int) gr_lev, (int) gr_verh);
         g.drawLine((int) gr_lev, (int) gr_nizh, (int) gr_prav, (int) gr_nizh);
         g.drawLine((int) gr_prav, (int) gr_nizh, (int) gr_prav, (int) gr_verh);
         g.drawLine((int) gr_prav, (int) gr_verh, (int) gr_lev, (int) gr_verh);
-        Color cr2 = new Color(255,255,255);
+        Color cr2 = new Color(255, 255, 255);
         g.setColor(cr2);
-        g.fillRect(500,650,max_shkala, 10);
+        g.fillRect(500, 650, max_shkala, 10);
         Color e = new Color(58, 246, 6);
         g.setColor(e);
-        g.fillRect(500,650,shkala, 10);
-        Color cr1 = new Color(0,0,0);
+        g.fillRect(500, 650, shkala, 10);
+        Color cr1 = new Color(0, 0, 0);
         g.setColor(cr1);
         g.drawRect(500, 650, max_shkala, 10);
-        g.drawString("Exp."+ oput, 500, 640);
+        g.drawString("Exp." + oput, 500, 640);
         g.dispose();
         bufferStrategy.show();
     }
@@ -283,6 +316,23 @@ public class MyFrame extends JFrame implements KeyEventDispatcher, MouseListener
         if (pause == 0) {
             m = 13 * (e.getX() - 930) / Math.sqrt((e.getX() - 930) * (e.getX() - 930) + (e.getY() - 540) * (e.getY() - 540));
             n = 13 * (e.getY() - 540) / Math.sqrt((e.getX() - 930) * (e.getX() - 930) + (e.getY() - 540) * (e.getY() - 540));
+        }
+        if (pause == 2) {
+            if((e.getX()<590)&&(e.getX()>90)&&(e.getY()>90)&&(e.getY()<990)){
+                vub = vub + 1;
+                vub_bloki.add(k);
+                pause = 1;
+            }
+            if((e.getX()<1140)&&(e.getX()>640)&&(e.getY()>90)&&(e.getY()<990)){
+                vub = vub + 1;
+                vub_bloki.add(l);
+                pause = 1;
+            }
+            if((e.getX()<1690)&&(e.getX()>1190)&&(e.getY()>90)&&(e.getY()<990)){
+                vub = vub + 1;
+                vub_bloki.add(p);
+                pause = 1;
+            }
         }
         if (pause == 1) {
             int min = 60;
@@ -296,14 +346,14 @@ public class MyFrame extends JFrame implements KeyEventDispatcher, MouseListener
                 uy = e.getY() - (e.getY() % 30) + 30;
             }
             for (int i = 0; i < colvoblokovvkorable; i = i + 1) {
-                if ((((Math.abs(ux - korabl.get(i).x)) + (Math.abs(uy - korabl.get(i).y))) < min)&&(korabl.get(i).hp>0)) {
+                if ((((Math.abs(ux - korabl.get(i).x)) + (Math.abs(uy - korabl.get(i).y))) < min) && (korabl.get(i).hp > 0)) {
                     min = ((Math.abs(ux - (int) korabl.get(i).x)) + (Math.abs(uy - (int) korabl.get(i).y)));
                 }
 
             }
 
-            if ((min < 35)&&(min>0)) {
-                korabl.add(new Blocks(ux, uy, r.nextInt(2), 0, 0, 0, 0, 200,1));
+            if ((min < 35) && (min > 0)) {
+                korabl.add(new Blocks(ux, uy, vub_bloki.get(vub), 0, 0, 0, 0, 200, 1));
                 colvoblokovvkorable = colvoblokovvkorable + 1;
                 oput = oput - 1;
                 pause = 0;
@@ -329,17 +379,20 @@ public class MyFrame extends JFrame implements KeyEventDispatcher, MouseListener
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent e) {
-        if ((e.getKeyCode() == KeyEvent.VK_ENTER) && (e.getID() == KeyEvent.KEY_PRESSED)&&(oput > 0)) {
+        if ((e.getKeyCode() == KeyEvent.VK_ENTER) && (e.getID() == KeyEvent.KEY_PRESSED) && (oput > 0)) {
             if (pause == 0) {
-                pause = 1;
+                pause = 2;
                 za = 0;
                 zw = 0;
                 zs = 0;
                 zd = 0;
+                k = r.nextInt(2);
+                l = r.nextInt(2);
+                p = r.nextInt(2);
             }
         }
         if ((pause == 0) && (e.getKeyCode() == KeyEvent.VK_SPACE) && (e.getID() == KeyEvent.KEY_PRESSED)) {
-            vragi.add(new Blocks(r.nextInt(1500), r.nextInt(1000), r.nextInt((2)), r.nextInt((3)) - 1, r.nextInt(3) - 1, 0, 0, 200,1));
+            vragi.add(new Blocks(r.nextInt(1500), r.nextInt(1000), r.nextInt((2)), r.nextInt((3)) - 1, r.nextInt(3) - 1, 0, 0, 200, 1));
             kolvo_vragov = kolvo_vragov + 1;
         }
         if ((pause == 0) && (e.getID() == KeyEvent.KEY_PRESSED) && (e.getKeyCode() == 87)) {
